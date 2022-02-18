@@ -33,3 +33,6 @@
 
 # Doxygen
 docs*/*
+
+# hidden files
+.*

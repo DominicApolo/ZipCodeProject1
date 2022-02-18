@@ -1,10 +1,8 @@
 #ifndef EXTREMATABLE_H
 #define EXTREMATABLE_H
 
-#include <fstream>
 #include <iostream>
 #include <map>
-#include <sstream>
 #include <string>
 
 #include "Place.h"
@@ -21,20 +19,17 @@ struct Extrema {
     Extreme west;
 };
 
+std::ostream& operator<<(std::ostream& os, const Extreme& extreme);
+std::ostream& operator<<(std::ostream& os, const Extrema& extrema);
+
+// maps a state id string to an extrema struct that contains the zip codes of the north, south, east, and westernmost zip codes
 class ExtremaTable {
-   private:
+   public:
     std::map<std::string, Extrema> table;
 
    public:
     ExtremaTable();
     void update(const Place place);
-
-    // void print() {
-    //     for (map<std::string, Extrema >::const_iterator it = table.begin();
-    //          it != table.end(); ++it) {
-    //         std::cout << it->first << " " << "\n";
-    //     }
-    // }
 };
 
 #endif

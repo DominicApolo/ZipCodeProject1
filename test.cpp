@@ -1,27 +1,47 @@
 #include <fstream>
 #include <iostream>
-#include <vector>
 
 #include "CsvBuffer.h"
 #include "extremaTable.h"
 int main(int argc, char const *argv[]) {
-    std::ifstream file("us_postal_codes.csv");
+    // std::ifstream file("us_postal_codes.csv");
+    std::ifstream file("lat_sort.csv");
+
+    if(!file) {
+        exit(0);
+    }
 
     CsvBuffer buf;
 
     ExtremaTable test;
+    int i = 0;
 
-    while (file.peek() != EOF) {
+    while (!file.eof()) {
+
         buf.read(file);
         while (buf.recordCount > 0) {
             Place p;
             p.unpack(buf);
-            p.print();
-            std::cout << std::endl;
+            test.update(p);
         }
-        std::cout << std::endl;
+
     }
     file.close();
+
+    // example of printing
+
+    std::cout << "State\t"
+              << "North\t"
+              << "South\t"
+              << "West\t"
+              << "East\t" << std::endl;
+    for (auto it : test.table) {
+        std::cout << it.first << "\t"
+                  << it.second.north.zip << "\t"
+                  << it.second.south.zip << "\t"
+                  << it.second.west.zip << "\t"
+                  << it.second.east.zip << std::endl;
+    }
 
     return 0;
 }

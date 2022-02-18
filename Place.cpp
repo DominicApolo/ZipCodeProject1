@@ -3,11 +3,11 @@
 using std::string;
 
 Place::Place() {
-    zipcode = " ";
-    state = " ";
-    name = " ";
+    zipcode = "";
+    state = "";
+    name = "";
     latitude = 0;
-    county = " ";
+    county = "";
     longitude = 0;
 };
 
@@ -83,6 +83,8 @@ bool Place ::operator<(const Place& loc) const {
 bool Place ::operator>(const Place& loc) const {
     return getState() > loc.getState();
 }
+
+
 
 void Place::print() {
     std::cout << zipcode << ' '
