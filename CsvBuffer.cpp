@@ -27,6 +27,7 @@ bool CsvBuffer::hasRecords() { return recordCount > 0; }
 
 void CsvBuffer::read(std::istream& instream) {
     char c;
+    bool inQuotes = false;
     // num of chars to read from the file
     long toRead = getAvailSpace();
 
@@ -36,9 +37,11 @@ void CsvBuffer::read(std::istream& instream) {
         if (c == '\n') {
             // TODO this is a hacky way to deal with the new line at the end of the file
             //      figure out a way to do this better?
-            if (instream.peek() != '\n') {
+            if (instream.peek() != '\n' && !inQuotes) {
                 recordCount++;
             }
+        } else if (c == '"') {
+            inQuotes = !inQuotes;
         }
         buffer[head] = c;
         // if we are past the end of the buffer, wrap back to the start
@@ -67,6 +70,7 @@ bool CsvBuffer::unpack(std::string& str) {
                 } else if (c == '\n') {
                     fieldHasMore = false;
                     recordHasMore = false;
+                    std::cout << "hi" << std::endl;
                     recordCount--;
                 } else if (c == '"') {
                     state = CSVState::QuotedField;
