@@ -70,7 +70,6 @@ bool CsvBuffer::unpack(std::string& str) {
                 } else if (c == '\n') {
                     fieldHasMore = false;
                     recordHasMore = false;
-                    std::cout << "hi" << std::endl;
                     recordCount--;
                 } else if (c == '"') {
                     state = CSVState::QuotedField;
