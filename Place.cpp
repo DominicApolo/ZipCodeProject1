@@ -52,7 +52,6 @@ void Place::setLongi(float val) { longitude = val; }
 
 // passing to place object by unpacking from buffer
 void Place::unpack(CsvBuffer& buffer) {
-    // string flush;
     buffer.unpack(zipcode);
     buffer.unpack(name);
     buffer.unpack(state);
@@ -83,8 +82,6 @@ bool Place ::operator<(const Place& loc) const {
 bool Place ::operator>(const Place& loc) const {
     return getState() > loc.getState();
 }
-
-
 
 void Place::print() {
     std::cout << zipcode << ' '

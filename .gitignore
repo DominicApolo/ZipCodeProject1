@@ -36,3 +36,7 @@ docs*/*
 
 # hidden files
 .*
+
+# project 1 specific
+*.csv
+*.xlsx

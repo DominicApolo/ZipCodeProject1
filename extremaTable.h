@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "Place.h"
 
@@ -19,6 +20,8 @@ struct Extrema {
     Extreme west;
 };
 
+std::ostream& ExtraText(std::ostream& os, char first, char between, char end, const size_t width);
+
 std::ostream& operator<<(std::ostream& os, const Extreme& extreme);
 std::ostream& operator<<(std::ostream& os, const Extrema& extrema);
 
@@ -30,6 +33,8 @@ class ExtremaTable {
    public:
     ExtremaTable();
     void update(const Place place);
+    friend std::ostream& operator<<(std::ostream& os, const ExtremaTable& extremaTable);
+    std::vector<std::string> getHeaders();
 };
 
 #endif

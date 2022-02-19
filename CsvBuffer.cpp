@@ -3,14 +3,27 @@
 // curr points to the start of unprocessed data
 // head points to the end of unprocessed data
 #include <iostream>
-CsvBuffer::CsvBuffer(const size_t size, const char delim) {
+
+/**
+ * @brief Construct a new Csv Buffer:: Csv Buffer object
+ *
+ * @param size
+ * @param delim
+ */
+CsvBuffer::CsvBuffer(const size_t size, const char delim) : maxSize(size), delim(delim) {
     buffer.resize(size);
-    this->delim = delim;
-    maxSize = size;
     curr = 0;
     head = 0;
     recordCount = 0;
 }
+
+/**
+ * @brief
+ *
+ * @return true
+ * @return false
+ */
+bool CsvBuffer::hasRecords() { return recordCount > 0; }
 
 void CsvBuffer::read(std::istream& instream) {
     char c;
@@ -33,23 +46,62 @@ void CsvBuffer::read(std::istream& instream) {
     }
 }
 
-void CsvBuffer::unpack(std::string& str) {
-    while (true) {
-        if (buffer[curr] == ',') {
-            break;
-        } else if (buffer[curr] == '\n') {
-            recordCount--;
-            break;
-        } else {
-            str.push_back(buffer[curr]);
+/**
+ * @brief
+ *
+ * @param str
+ * @return true
+ * @return false
+ */
+bool CsvBuffer::unpack(std::string& str) {
+    auto state = CSVState::UnquotedField;  // assume field is not quoted by default
+
+    bool fieldHasMore = true;
+    bool recordHasMore = true;
+    while (fieldHasMore) {
+        char c = buffer[curr];
+        switch (state) {
+            case CSVState::UnquotedField:
+                if (c == delim) {
+                    fieldHasMore = false;
+                } else if (c == '\n') {
+                    fieldHasMore = false;
+                    recordHasMore = false;
+                    recordCount--;
+                } else if (c == '"') {
+                    state = CSVState::QuotedField;
+                } else {
+                    str.push_back(c);
+                }
+                break;
+            case CSVState::QuotedField:
+                if (c == '"') {
+                    state = CSVState::QuotedQuote;
+                } else {
+                    str.push_back(c);
+                }
+                break;
+            case CSVState::QuotedQuote:
+                if (c == delim) {
+                    fieldHasMore = false;
+                } else if (c == '"') {
+                    str.push_back(c);
+                    state = CSVState::QuotedField;
+                } else {
+                    state = CSVState::UnquotedField;
+                }
+                break;
         }
-        // wrap around if necessary
         curr = (curr + 1) % maxSize;
     }
-    // move past the delimiter, wrap around if necessary
-    curr = (curr + 1) % maxSize;
+    return recordHasMore;
 }
 
+/**
+ * @brief
+ *
+ * @return size_t
+ */
 size_t CsvBuffer::getAvailSpace() {
     size_t space = 0;
     if (head > curr) {
@@ -68,6 +120,11 @@ size_t CsvBuffer::getAvailSpace() {
     return space;
 }
 
+/**
+ * @brief
+ *
+ * @return std::string
+ */
 std::string CsvBuffer::dump() {
     return buffer;
 }

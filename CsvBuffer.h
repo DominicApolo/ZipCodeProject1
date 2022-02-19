@@ -1,27 +1,35 @@
 #ifndef CSVBUFFER_H
 #define CSVBUFFER_H
 
-#include <string>
 #include <istream>
+#include <string>
+
+// idea adapted from https://stackoverflow.com/a/30338543
+enum class CSVState {
+    QuotedField,
+    UnquotedField,
+    QuotedQuote
+};
+
 class CsvBuffer {
    public:
+    const size_t maxSize;
+    const char delim;
+
     size_t curr;
     std::string buffer;
     size_t head;
     size_t availSpace;
     size_t recordCount;
-    size_t maxSize;
-    char delim;
 
    public:
-
-    CsvBuffer(const size_t size = 2048, const char delim = ',');
+    CsvBuffer(const size_t size = 4096, const char delim = ',');
     void read(std::istream& instream);
-    void unpack(std::string& str);
+    bool unpack(std::string& str);
 
-    char operator[](size_t i);
     std::string dump();
     size_t getAvailSpace();
+    bool hasRecords();
 };
 
 #endif  // CSVBUFFER_H
