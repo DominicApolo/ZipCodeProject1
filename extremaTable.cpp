@@ -3,7 +3,7 @@
 ExtremaTable::ExtremaTable() {}
 
 /**
- * @brief
+ * @brief 
  *
  * @param os
  * @param extreme
@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& os, const Extreme& extreme) {
 }
 
 /**
- * @brief
+ * @brief 
  *
  * @param os
  * @param extrema
@@ -50,10 +50,10 @@ void ExtremaTable::update(const Place place) {
             extrema.south = {place.getZipCode(), place.getLat()};
         }
         if (place.getLongi() < extrema.east.coord) {
-            extrema.east = {place.getZipCode(), place.getLat()};
+            extrema.east = {place.getZipCode(), place.getLongi()};
         }
         if (place.getLongi() > extrema.west.coord) {
-            extrema.west = {place.getZipCode(), place.getLat()};
+            extrema.west = {place.getZipCode(), place.getLongi()};
         }
     } else {
         // state not in table, record zip as
@@ -112,7 +112,6 @@ std::ostream& operator<<(std::ostream& os, const ExtremaTable& extrema) {
            << l << it.second.north.zip << "\t"
            << l << it.second.south.zip << "\t"
            << l << std::endl;
-    }
 
     ExtraText(os, '-', '-', '-', 7);
 

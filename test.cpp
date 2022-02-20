@@ -5,17 +5,17 @@
 #include "CsvBuffer.h"
 #include "extremaTable.h"
 
-std::vector<std::string> unpackHeader(CsvBuffer& buf) {
-    std::vector<std::string> headers;
+// std::vector<std::string> unpackHeader(CsvBuffer& buf) {
+//     std::vector<std::string> headers;
 
-    for (int i = 0; i < 6; i++) {
-        std::string temp;
-        buf.unpack(temp);
-        std::cout << temp << std::endl;
-        headers.push_back(temp);
-    }
-    return headers;
-}
+//     for (int i = 0; i < 6; i++) {
+//         std::string temp;
+//         buf.unpack(temp);
+//         std::cout << temp << std::endl;
+//         headers.push_back(temp);
+//     }
+//     return headers;
+// }
 
 int main(int argc, char const* argv[]) {
     // check to see if there is a command line argument
@@ -27,7 +27,8 @@ int main(int argc, char const* argv[]) {
     std::ifstream file(argv[1]);
 
     if (!file) {
-        exit(0);
+        std::cerr << "Input file cannot be opened. (might not exist)" << std::endl;
+        exit(1);
     }
 
     CsvBuffer buf;
@@ -35,11 +36,9 @@ int main(int argc, char const* argv[]) {
     ExtremaTable table;
 
     buf.read(file);
-    auto headers = unpackHeader(buf);
+    buf.readHeader();
 
-    std::cout << buf.dump() << std::endl;
-
-    while (!file.eof()) {
+    while (!file.eof() || buf.hasRecords()) {
         while (buf.hasRecords()) {
             Place p;
             p.unpack(buf);

@@ -52,13 +52,38 @@ void Place::setLongi(float val) { longitude = val; }
 
 // passing to place object by unpacking from buffer
 void Place::unpack(CsvBuffer& buffer) {
-    buffer.unpack(zipcode);
-    buffer.unpack(name);
-    buffer.unpack(state);
-    buffer.unpack(county);
+    std::string skip;
     string lat_str, long_str;
-    buffer.unpack(lat_str);
-    buffer.unpack(long_str);
+
+    bool moreFields = true;
+    while (moreFields) {
+        auto curField = buffer.getCurFieldHeader();
+        switch (curField.first) {
+            case HeaderField::ZipCode:
+                moreFields = buffer.unpack(zipcode);
+                break;
+            case HeaderField::PlaceName:
+                moreFields = buffer.unpack(name);
+                break;
+            case HeaderField::State:
+                moreFields = buffer.unpack(state);
+                break;
+            case HeaderField::County:
+                moreFields = buffer.unpack(county);
+                break;
+            case HeaderField::Latitude:
+                moreFields = buffer.unpack(lat_str);
+                break;
+            case HeaderField::Longitude:
+                moreFields = buffer.unpack(long_str);
+                break;
+            default:
+                moreFields = buffer.unpack(skip);
+                break;
+
+        }
+    }
+
     std::stringstream(lat_str) >> latitude;    // convert to float
     std::stringstream(long_str) >> longitude;  // convert to float
 }
@@ -85,9 +110,9 @@ bool Place ::operator>(const Place& loc) const {
 
 void Place::print() {
     std::cout << zipcode << ' '
-              << state << ' '
               << name << ' '
-              << latitude << ' '
+              << state << ' '
               << county << ' '
+              << latitude << ' '
               << longitude;
 }

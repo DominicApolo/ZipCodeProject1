@@ -46,8 +46,8 @@ class Place {
     std::string name;
     std::string state;
     std::string county;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
 };
 // Default constructor
 

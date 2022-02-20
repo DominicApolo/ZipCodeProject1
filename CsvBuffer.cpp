@@ -3,6 +3,7 @@
 // curr points to the start of unprocessed data
 // head points to the end of unprocessed data
 #include <iostream>
+#include <regex>
 
 /**
  * @brief Construct a new Csv Buffer:: Csv Buffer object
@@ -25,6 +26,11 @@ CsvBuffer::CsvBuffer(const size_t size, const char delim) : maxSize(size), delim
  */
 bool CsvBuffer::hasRecords() { return recordCount > 0; }
 
+/**
+ * @brief
+ *
+ * @param instream
+ */
 void CsvBuffer::read(std::istream& instream) {
     char c;
     bool inQuotes = false;
@@ -52,9 +58,9 @@ void CsvBuffer::read(std::istream& instream) {
 /**
  * @brief
  *
- * @param str
- * @return true
- * @return false
+ * @param str the string that the field will be read into
+ * @return true have unpacked full record
+ * @return false have not unpacked all fields in record yet
  */
 bool CsvBuffer::unpack(std::string& str) {
     auto state = CSVState::UnquotedField;  // assume field is not quoted by default
@@ -67,9 +73,11 @@ bool CsvBuffer::unpack(std::string& str) {
             case CSVState::UnquotedField:
                 if (c == delim) {
                     fieldHasMore = false;
+                    fieldNum++;
                 } else if (c == '\n') {
                     fieldHasMore = false;
                     recordHasMore = false;
+                    fieldNum = 0;
                     recordCount--;
                 } else if (c == '"') {
                     state = CSVState::QuotedField;
@@ -87,6 +95,7 @@ bool CsvBuffer::unpack(std::string& str) {
             case CSVState::QuotedQuote:
                 if (c == delim) {
                     fieldHasMore = false;
+                    fieldNum++;
                 } else if (c == '"') {
                     str.push_back(c);
                     state = CSVState::QuotedField;
@@ -123,6 +132,10 @@ size_t CsvBuffer::getAvailSpace() {
     return space;
 }
 
+std::pair<HeaderField, std::string> CsvBuffer::getCurFieldHeader() {
+    return headers[fieldNum];
+}
+
 /**
  * @brief
  *
@@ -130,4 +143,41 @@ size_t CsvBuffer::getAvailSpace() {
  */
 std::string CsvBuffer::dump() {
     return buffer;
+}
+
+HeaderField getFieldType(std::string headerValue) {
+    std::regex zipCodePat("Zip\\s*Code");
+    std::regex placeNamePat("Place\\s*Name");
+    std::regex statePat("State");
+    std::regex countyPat("County");
+    std::regex latitudePat("Lat");
+    std::regex longitudePat("Long");
+
+    // std::smatch match;
+
+    if (std::regex_search(headerValue, zipCodePat)) {
+        return HeaderField::ZipCode;
+    } else if (std::regex_search(headerValue, placeNamePat)) {
+        return HeaderField::PlaceName;
+    } else if (std::regex_search(headerValue, statePat)) {
+        return HeaderField::State;
+    } else if (std::regex_search(headerValue, countyPat)) {
+        return HeaderField::County;
+    } else if (std::regex_search(headerValue, latitudePat)) {
+        return HeaderField::Latitude;
+    } else if (std::regex_search(headerValue, longitudePat)) {
+        return HeaderField::Longitude;
+    } else {
+        return HeaderField::Unknown;
+    }
+}
+
+void CsvBuffer::readHeader() {
+    bool more = true;
+    while (more) {
+        std::string temp;
+        more = unpack(temp);
+        headers.push_back({getFieldType(temp), temp});
+    }
+    numFields = headers.size();
 }
