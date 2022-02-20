@@ -3,7 +3,7 @@
 ExtremaTable::ExtremaTable() {}
 
 /**
- * @brief 
+ * @brief
  *
  * @param os
  * @param extreme
@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& os, const Extreme& extreme) {
 }
 
 /**
- * @brief 
+ * @brief
  *
  * @param os
  * @param extrema
@@ -112,7 +112,7 @@ std::ostream& operator<<(std::ostream& os, const ExtremaTable& extrema) {
            << l << it.second.north.zip << "\t"
            << l << it.second.south.zip << "\t"
            << l << std::endl;
-
+    }
     ExtraText(os, '-', '-', '-', 7);
 
     return os;
