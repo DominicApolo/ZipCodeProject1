@@ -21,34 +21,22 @@ Place::Place(const Place& loc) {
     longitude = loc.getLongi();
 };
 
+// overload the assignment operator
+void Place ::operator=(const Place& loc) {
+    this->zipcode = loc.getZipCode();
+    this->name = loc.getName();
+    this->state = loc.getState();
+    this->county = loc.getCounty();
+    this->latitude = loc.getLat();
+    this->longitude = loc.getLongi();
+}
+
 string Place::getZipCode() const { return zipcode; }  // zipcode value
-// get name
-string Place::getName() const { return name; }  // name value
-// get state
-string Place::getState() const { return state; }  // State value
-// get lat
-string Place::getCounty() const { return county; }  // county value
-
-float Place::getLat() const { return latitude; }  // Latitude value
-// get longitude
-float Place::getLongi() const { return longitude; }  // longitude value
-// Set zip code
-void Place::setZipCode(string val) { zipcode = val; }
-
-// set name
-void Place::setName(string val) { name = val; }
-
-// set state
-void Place::setState(string val) { state = val; }
-
-// set county
-void Place::setCounty(string val) { county = val; }
-
-// Set latitude
-void Place::setLat(float val) { latitude = val; }
-
-// Set longtitude
-void Place::setLongi(float val) { longitude = val; }
+string Place::getName() const { return name; }        // name value
+string Place::getState() const { return state; }      // State value
+string Place::getCounty() const { return county; }    // county value
+double Place::getLat() const { return latitude; }     // Latitude value
+double Place::getLongi() const { return longitude; }  // longitude value
 
 // passing to place object by unpacking from buffer
 void Place::unpack(CsvBuffer& buffer) {
@@ -80,39 +68,9 @@ void Place::unpack(CsvBuffer& buffer) {
             default:
                 moreFields = buffer.unpack(skip);
                 break;
-
         }
     }
 
     std::stringstream(lat_str) >> latitude;    // convert to float
     std::stringstream(long_str) >> longitude;  // convert to float
-}
-
-// overload the assignment operator
-void Place ::operator=(const Place& loc) {
-    setZipCode(loc.getZipCode());
-    setName(loc.getName());
-    setState(loc.getState());
-    setCounty(loc.getCounty());
-    setLat(loc.getLat());
-    setLongi(loc.getLongi());
-}
-
-// operator overloaded
-bool Place ::operator<(const Place& loc) const {
-    return getState() < loc.getState();
-}
-
-// operator overloaded
-bool Place ::operator>(const Place& loc) const {
-    return getState() > loc.getState();
-}
-
-void Place::print() {
-    std::cout << zipcode << ' '
-              << name << ' '
-              << state << ' '
-              << county << ' '
-              << latitude << ' '
-              << longitude;
 }

@@ -1,21 +1,8 @@
 #include <fstream>
 #include <iostream>
-#include <vector>
 
 #include "CsvBuffer.h"
 #include "extremaTable.h"
-
-// std::vector<std::string> unpackHeader(CsvBuffer& buf) {
-//     std::vector<std::string> headers;
-
-//     for (int i = 0; i < 6; i++) {
-//         std::string temp;
-//         buf.unpack(temp);
-//         std::cout << temp << std::endl;
-//         headers.push_back(temp);
-//     }
-//     return headers;
-// }
 
 int main(int argc, char const* argv[]) {
     // check to see if there is a command line argument
@@ -35,8 +22,7 @@ int main(int argc, char const* argv[]) {
 
     ExtremaTable table;
 
-    buf.read(file);
-    buf.readHeader();
+    buf.init(file);
 
     while (!file.eof() || buf.hasRecords()) {
         while (buf.hasRecords()) {

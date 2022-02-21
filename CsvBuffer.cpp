@@ -1,16 +1,8 @@
 #include "CsvBuffer.h"
 
-// curr points to the start of unprocessed data
-// head points to the end of unprocessed data
 #include <iostream>
 #include <regex>
 
-/**
- * @brief Construct a new Csv Buffer:: Csv Buffer object
- *
- * @param size
- * @param delim
- */
 CsvBuffer::CsvBuffer(const size_t size, const char delim) : maxSize(size), delim(delim) {
     buffer.resize(size);
     curr = 0;
@@ -18,19 +10,13 @@ CsvBuffer::CsvBuffer(const size_t size, const char delim) : maxSize(size), delim
     recordCount = 0;
 }
 
-/**
- * @brief
- *
- * @return true
- * @return false
- */
+void CsvBuffer::init(std::istream& instream) {
+    read(instream);
+    readHeader();
+}
+
 bool CsvBuffer::hasRecords() { return recordCount > 0; }
 
-/**
- * @brief
- *
- * @param instream
- */
 void CsvBuffer::read(std::istream& instream) {
     char c;
     bool inQuotes = false;
@@ -55,13 +41,6 @@ void CsvBuffer::read(std::istream& instream) {
     }
 }
 
-/**
- * @brief
- *
- * @param str the string that the field will be read into
- * @return true have unpacked full record
- * @return false have not unpacked all fields in record yet
- */
 bool CsvBuffer::unpack(std::string& str) {
     auto state = CSVState::UnquotedField;  // assume field is not quoted by default
 
@@ -109,11 +88,6 @@ bool CsvBuffer::unpack(std::string& str) {
     return recordHasMore;
 }
 
-/**
- * @brief
- *
- * @return size_t
- */
 size_t CsvBuffer::getAvailSpace() {
     size_t space = 0;
     if (head > curr) {
@@ -136,15 +110,6 @@ std::pair<HeaderField, std::string> CsvBuffer::getCurFieldHeader() {
     return headers[fieldNum];
 }
 
-/**
- * @brief
- *
- * @return std::string
- */
-std::string CsvBuffer::dump() {
-    return buffer;
-}
-
 HeaderField getFieldType(std::string headerValue) {
     std::regex zipCodePat("Zip\\s*Code");
     std::regex placeNamePat("Place\\s*Name");
@@ -152,8 +117,6 @@ HeaderField getFieldType(std::string headerValue) {
     std::regex countyPat("County");
     std::regex latitudePat("Lat");
     std::regex longitudePat("Long");
-
-    // std::smatch match;
 
     if (std::regex_search(headerValue, zipCodePat)) {
         return HeaderField::ZipCode;

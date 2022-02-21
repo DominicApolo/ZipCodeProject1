@@ -17,29 +17,23 @@ class Place {
     Place(const Place& loc);
 
     std::string getZipCode() const;
-    void setZipCode(std::string val);
-
     std::string getState() const;
-    void setState(std::string val);
-
     std::string getName() const;
-    void setName(std::string val);
-
     std::string getCounty() const;
-    void setCounty(std::string val);
-
-    float getLat() const;
-    void setLat(float val);
-
-    float getLongi() const;
-    void setLongi(float val);
-
+    double getLat() const;
+    double getLongi() const;
+    /**
+     * @brief Reads a record from the buffer and unpacks the fields into the class members
+     * 
+     * @param[in, out] buffer The buffer to be read from
+     * 
+     * @pre buffer has a record that contains zipcode, place name, state id, county, latitude, and longitude fields
+     * 
+     * @post the member variables have been set to the values mentioned above, if the column with that name was found
+     */
     void unpack(CsvBuffer& buffer);
 
     void operator=(const Place& loc);
-    bool operator<(const Place& loc) const;
-    bool operator>(const Place& loc) const;
-    void print();
 
    private:
     std::string zipcode;
@@ -49,6 +43,4 @@ class Place {
     double latitude;
     double longitude;
 };
-// Default constructor
-
 #endif

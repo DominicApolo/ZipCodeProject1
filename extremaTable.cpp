@@ -2,32 +2,6 @@
 
 ExtremaTable::ExtremaTable() {}
 
-/**
- * @brief
- *
- * @param os
- * @param extreme
- * @return std::ostream&
- */
-std::ostream& operator<<(std::ostream& os, const Extreme& extreme) {
-    return os << "zip code: " << extreme.zip << std::endl
-              << "coord: " << extreme.coord << std::endl;
-}
-
-/**
- * @brief
- *
- * @param os
- * @param extrema
- * @return std::ostream&
- */
-std::ostream& operator<<(std::ostream& os, const Extrema& extrema) {
-    return os << "north: " << extrema.north << std::endl;
-    return os << "south: " << extrema.south << std::endl;
-    return os << "east: " << extrema.east << std::endl;
-    return os << "west: " << extrema.west << std::endl;
-}
-
 // gets a place as input
 // checks to see if place is in the map already
 // if it is, it checks each of the new place's lat and long against the current most extreme and
