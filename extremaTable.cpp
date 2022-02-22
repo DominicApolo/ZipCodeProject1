@@ -17,18 +17,41 @@ void ExtremaTable::update(const Place place) {
     if (it != table.end()) {
         auto& extrema = it->second;
 
+        // was running into an issue with the Micronesian zip codes (state id FM)
+        // there are four zip codes all with the same coordinates.
+        // The zip code that would get recorded was the one that was came first in the file.
+        // So when the file was sorted on a different column it was possible to get a different
+        // zip code for the same coordinates. To deal with this, I just check to see if the coordinates
+        // are equal, then take the largest zip code with those coordinates.
+
+        // check north
         if (place.getLat() > extrema.north.coord) {
             extrema.north = {place.getZipCode(), place.getLat()};
+        } else if (place.getLat() == extrema.north.coord && place.getZipCode() > extrema.north.zip) {
+            extrema.north = {place.getZipCode(), place.getLat()};
         }
+
+        // check south
         if (place.getLat() < extrema.south.coord) {
             extrema.south = {place.getZipCode(), place.getLat()};
+        } else if (place.getLat() == extrema.south.coord && place.getZipCode() > extrema.south.zip) {
+            extrema.south = {place.getZipCode(), place.getLat()};
         }
+
+        // check east
         if (place.getLongi() < extrema.east.coord) {
             extrema.east = {place.getZipCode(), place.getLongi()};
+        } else if (place.getLongi() == extrema.east.coord && place.getZipCode() > extrema.east.zip) {
+            extrema.east = {place.getZipCode(), place.getLongi()};
         }
+
+        // check west
         if (place.getLongi() > extrema.west.coord) {
             extrema.west = {place.getZipCode(), place.getLongi()};
+        } else if (place.getLongi() == extrema.west.coord && place.getZipCode() > extrema.west.zip) {
+            extrema.west = {place.getZipCode(), place.getLongi()};
         }
+
     } else {
         // state not in table, record zip as
         Extrema extrema = {

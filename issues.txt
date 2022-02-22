@@ -1,6 +1,0 @@
-Cannot handle missing fields
-
-Cannot handle delimiters in fields, i.e. enclosed in quotes
-idea to fix: write simple state machine to deal with quoted new lines
-
-Hacky fix to deal with consecutive new lines

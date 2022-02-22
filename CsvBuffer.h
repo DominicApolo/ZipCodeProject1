@@ -24,6 +24,8 @@ enum class HeaderField {
     Unknown
 };
 
+
+
 HeaderField getFieldType(std::string headerValue);
 
 class CsvBuffer {
