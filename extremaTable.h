@@ -9,15 +9,19 @@
 #include "Place.h"
 
 struct Extreme {
-    std::string zip;
-    double coord;
+    std::string zip; 
+    double coord; /// the latitude or longitude of the place
 };
 
 struct Extrema {
-    Extreme north;
+    /// The northern most extreme
+    Extreme north; 
+    /// The southern most extreme
     Extreme south;
-    Extreme east;
-    Extreme west;
+    /// The eastern most extreme 
+    Extreme east; 
+    /// The western most extreme
+    Extreme west; 
 };
 
 /**
@@ -28,7 +32,7 @@ struct Extrema {
  * @param between the middle character(s) that will be sent
  * @param end the last character to be sent
  * @param width the number of middle characters to send
- * @return std::ostream& 
+ * @return std::ostream& return the stream for reuse
  */
 std::ostream& ExtraText(std::ostream& os, char first, char between, char end, const size_t width);
 
@@ -59,7 +63,7 @@ class ExtremaTable {
      * @pre os is an open ostream
      * @post a formatted table has been output to the stream
      * 
-     * @return std::ostream& 
+     * @return std::ostream& return the stream for reuse
      */
     friend std::ostream& operator<<(std::ostream& os, const ExtremaTable& extremaTable);
     

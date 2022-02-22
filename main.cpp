@@ -4,6 +4,14 @@
 #include "CsvBuffer.h"
 #include "extremaTable.h"
 
+/**
+ * @brief Reads the csv file passed in as a commandline argument and outputs
+ *  a formatted table of the northern, southern, eastern, and westernmost zipcodes in a state. 
+ * 
+ * @param argc Used to check if there is an input file
+ * @param argv Contains the input file if given
+ * @return int 
+ */
 int main(int argc, char const* argv[]) {
     // check to see if there is a command line argument
     if (argc < 2) {

@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <regex>
-#include <cassert>
 
 CsvBuffer::CsvBuffer(const size_t size, const char delim) : maxSize(size), delim(delim) {
     buffer.resize(size);

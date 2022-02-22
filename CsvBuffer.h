@@ -6,14 +6,14 @@
 #include <vector>
 
 // idea adapted from https://stackoverflow.com/a/30338543
-// used for tiny csv parsing state machine
+/// used for tiny csv parsing state machine
 enum class CSVState {
     QuotedField,
     UnquotedField,
     QuotedQuote
 };
 
-// contains the values that will be used to determine which value of the place class the field will be unpacked into
+/// contains the values that will be used to determine which member of the place class the field will be unpacked into
 enum class HeaderField {
     ZipCode,
     PlaceName,
@@ -33,12 +33,17 @@ class CsvBuffer {
 
     std::string buffer;
 
-    size_t curr;  // holds the position of the start of unprocessed fields
-    size_t head;  // holds the position of the end of unprocessed fields
+    /// holds the position of the start of unprocessed fields
+    size_t curr;
+    /// holds the position of the end of unprocessed fields    
+    size_t head;
 
-    size_t recordCount;  // number of records currently in the unprocessed part of the buffer
-    size_t fieldNum;     // keeps track of how many fields of a record have been processed
-    size_t numFields;    // number of fields in each record
+    /// number of records currently in the unprocessed part of the buffer
+    size_t recordCount;
+    /// keeps track of how many fields of a record have been processed    
+    size_t fieldNum;
+    /// number of fields in each record    
+    size_t numFields;
 
     // first part holds the header type for use when unpacking,
     // second part holds the actual header value
@@ -49,8 +54,8 @@ class CsvBuffer {
      *
      * @pre headers is an empty vector and the buffer has had data read into it
      *
-     * @post headers contains the pairs of header field types and the values of the header fields
-     *       curr points to the first record
+     * @post headers contains the pairs of header field types and the values of the header fields\n
+     *       curr points to the first record\n
      *       numFields is equal to number of header fields found
      */
     void readHeader();
@@ -72,7 +77,7 @@ class CsvBuffer {
      * @param[in] instream amount returned by getAvailSpace will be read from instream
      *
      * @pre instream is an open stream that contains data in a CSV format
-     * @post buffer contains data to be unpacked from curr to head
+     * @post buffer contains data to be unpacked from curr to head\n
      *       sets recordCount equal to number of records found while reading
      *
      */
@@ -100,11 +105,11 @@ class CsvBuffer {
      * @param[in] instream stream to be read from
      *
      * @pre buffer is empty
-     * @post headers contains the values returned by readHeader
-     *       buffer contains raw data
-     *       curr points to the start of the buffer
-     *       head points to the end of the buffer or the amount of data read from the stream, whichever is smaller
-     *       fieldNum is increased by one if the record contains more fields or is set to zero if the entire record has been read
+     * @post headers contains the values returned by readHeader\n
+     *       buffer contains raw data\n
+     *       curr points to the start of the buffer.\n
+     *       head points to the end of the buffer or the amount of data read from the stream, whichever is smaller.\n
+     *       fieldNum is increased by one if the record contains more fields or is set to zero if the entire record has been read.
      */
     void init(std::istream& instream);
 
