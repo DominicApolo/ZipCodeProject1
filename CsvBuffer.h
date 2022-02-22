@@ -24,8 +24,6 @@ enum class HeaderField {
     Unknown
 };
 
-
-
 HeaderField getFieldType(std::string headerValue);
 
 class CsvBuffer {
@@ -58,6 +56,14 @@ class CsvBuffer {
     void readHeader();
 
    public:
+   /**
+    * @brief Construct a new Csv Buffer object
+    * 
+    * @param size The max size of the buffer
+    * @param delim The delimiter used in the csv file
+    * 
+    * @pre size > 0
+    */
     CsvBuffer(const size_t size = 4096, const char delim = ',');
 
     /**

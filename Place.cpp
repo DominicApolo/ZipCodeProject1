@@ -1,5 +1,8 @@
 #include "Place.h"
 
+#include <fstream>
+#include <sstream>
+
 using std::string;
 
 Place::Place() {
