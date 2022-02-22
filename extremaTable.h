@@ -62,6 +62,12 @@ class ExtremaTable {
      * @return std::ostream& 
      */
     friend std::ostream& operator<<(std::ostream& os, const ExtremaTable& extremaTable);
+    
+    /**
+     * @brief returns the headers vector
+     * 
+     * @return std::vector<std::string> 
+     */
     std::vector<std::string> getHeaders();
 };
 

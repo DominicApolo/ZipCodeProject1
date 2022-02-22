@@ -7,11 +7,7 @@ ExtremaTable::ExtremaTable() {}
 // if it is, it checks each of the new place's lat and long against the current most extreme and
 // replaces it if it is more extreme
 // if it is not in the map, it records the zip code of the place as the most extreme in all four directions
-/**
- * @brief
- *
- * @param place
- */
+
 void ExtremaTable::update(const Place place) {
     auto it = table.find(place.getState());
     if (it != table.end()) {
@@ -64,16 +60,6 @@ void ExtremaTable::update(const Place place) {
     }
 }
 
-/**
- * @brief
- *
- * @param os
- * @param first
- * @param between
- * @param end
- * @param width
- * @return std::ostream&
- */
 std::ostream& ExtraText(std::ostream& os, char first, char between, char end, const size_t width) {
     os << first;
     for (unsigned short i = 0; i < 5; i++)
@@ -82,13 +68,6 @@ std::ostream& ExtraText(std::ostream& os, char first, char between, char end, co
     return os << std::endl;
 }
 
-/**
- * @brief
- *
- * @param os
- * @param extrema
- * @return std::ostream&
- */
 std::ostream& operator<<(std::ostream& os, const ExtremaTable& extrema) {
     ExtraText(os, '-', '-', '-', 7);
     char l = '|';
