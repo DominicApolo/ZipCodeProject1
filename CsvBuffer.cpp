@@ -27,8 +27,7 @@ void CsvBuffer::read(std::istream& instream) {
         instream.get(c);
         // check for new line here
         if (c == '\n') {
-            // TODO this is a hacky way to deal with the new line at the end of the file
-            //      figure out a way to do this better?
+            // skipping any newline characters at the end of the file
             if (instream.peek() != '\n' && !inQuotes) {
                 recordCount++;
             }
